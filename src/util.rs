@@ -14,7 +14,9 @@ where
     let return_value = f(&mut err as *mut *mut GError);
 
     if return_value.is_null() {
-        Err(glib::error::Error::wrap(err))
+        unsafe {
+            Err(glib::translate::FromGlibPtrFull::from_glib_full(err))
+        }
     } else {
         Ok(return_value)
     }
